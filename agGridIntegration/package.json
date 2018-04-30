@@ -1,0 +1,28 @@
+{
+  "name": "aggridintegration",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "webpack": "webpack",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "ag-grid": "^17.1.1",
+    "powerbi-visuals-utils-dataviewutils": "^1.4.1",
+    "webpack": "^4.6.0"
+  },
+  "devDependencies": {
+    "babel-core": "^6.26.3",
+    "babel-loader": "^7.1.4",
+    "babel-preset-env": "^1.6.1",
+    "css-loader": "^0.28.11",
+    "style-loader": "^0.21.0",
+    "ts-loader": "^4.2.0",
+    "typescript": "^2.8.3",
+    "webpack-cli": "^2.0.15",
+    "webpack-dev-server": "^3.1.3"
+  }
+}
