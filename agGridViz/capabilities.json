@@ -1,12 +1,17 @@
 {
     "dataRoles": [
         {
-            "displayName": "Category Data",
+            "displayName": "Rows",
             "name": "category",
             "kind": "Grouping"
         },
         {
-            "displayName": "Measure Data",
+            "displayName": "Columns",
+            "name": "columns",
+            "kind": "Grouping"
+        },
+        {
+            "displayName": "Values",
             "name": "measure",
             "kind": "Measure"
         }
@@ -70,13 +75,16 @@
                     }
                 },
                 "values": {
-                    "select": [
-                        {
-                            "bind": {
-                                "to": "measure"
+                    "group": {
+                    "by": "columns",
+                        "select": [
+                            {
+                                "bind": {
+                                    "to": "measure"
+                                }
                             }
-                        }
-                    ]
+                        ]
+                   }
                 }
             }
         }

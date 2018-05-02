@@ -44,7 +44,14 @@ module powerbi.extensibility.visual {
 
         public update(options: VisualUpdateOptions) {
             this.settings = Visual.parseSettings(options && options.dataViews && options.dataViews[0]);
-            new this.agGridIntegration.SimpleGrid(this.target,options.dataViews[0],this.selectionManager,this.host.createSelectionIdBuilder());
+            // let parameters: any={
+            //     target:this.target,
+            //     host:this.host,
+            //     dataView:options.dataViews[0],
+            //     selectionManager:this.selectionManager
+            // }
+
+            new this.agGridIntegration.SimpleGrid(this.target,options.dataViews[0],this.selectionManager,this.host);
 
         }
 
