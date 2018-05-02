@@ -30,26 +30,21 @@ module powerbi.extensibility.visual {
    
     export class Visual implements IVisual {
         private target: HTMLElement;
-        private updateCount: number;
         private settings: VisualSettings;
-        private textNode: Text;
         private agGridIntegration : any;
-
+        private selectionManager: ISelectionManager;
+        private host: IVisualHost;
         constructor(options: VisualConstructorOptions) {
+            this.selectionManager = options.host.createSelectionManager();
+            this.host=options.host;
             console.log('Visual constructor', options);
             this.target = options.element;
-            this.updateCount = 0;
-            debugger;
             this.agGridIntegration = (<any>window).agGridIntegration;
         }
 
         public update(options: VisualUpdateOptions) {
             this.settings = Visual.parseSettings(options && options.dataViews && options.dataViews[0]);
-            debugger;
-            new this.agGridIntegration.SimpleGrid(this.target,options.dataViews[0]);
-            if (typeof this.textNode !== "undefined") {
-                this.textNode.textContent = (this.updateCount++).toString();
-            }
+            new this.agGridIntegration.SimpleGrid(this.target,options.dataViews[0],this.selectionManager,this.host.createSelectionIdBuilder());
 
         }
 
