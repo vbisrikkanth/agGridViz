@@ -19,6 +19,6 @@ module.exports = {
     filename: 'agGridIntegration.js',
     libraryTarget: "window",
     library:"agGridIntegration",
-    path: path.resolve(__dirname, '../agGridViz/src')
+    path: path.resolve(__dirname, '../agGridViz/external')
   }
 };
