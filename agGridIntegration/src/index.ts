@@ -5,6 +5,7 @@ import  {License} from "../secret/license";
 import "ag-grid/dist/styles/ag-grid.css";
 import "ag-grid/dist/styles/ag-theme-balham.css";
 import "powerbi-visuals-utils-formattingutils/lib/index.css";
+import "../style/custom.css"
 import DataView = powerbi.DataView;
 import ISelectionManager = powerbi.extensibility.ISelectionManager;
 import ISelectionIdBuilder = powerbi.visuals.ISelectionIdBuilder;
