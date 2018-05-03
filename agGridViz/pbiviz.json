@@ -1,9 +1,9 @@
 {
   "visual": {
     "name": "agGridViz",
-    "displayName": "agGridViz",
+    "displayName": "Visual BI Table",
     "guid": "agGridVizA6788580EE9F43DE92468027A79EA9AB",
-    "visualClassName": "Visual",
+    "visualClassName": "VbiTable",
     "version": "1.0.0",
     "description": "",
     "supportUrl": "",
@@ -23,6 +23,7 @@
     "node_modules/powerbi-visuals-utils-typeutils/lib/index.js",
     "node_modules/powerbi-visuals-utils-dataviewutils/lib/index.js",
     "node_modules/powerbi-visuals-utils-formattingutils/lib/index.js",
+    "node_modules/jquery/dist/jquery.min.js",
     "external/agGridIntegration.js"
   ],
   "style": "style/visual.less",

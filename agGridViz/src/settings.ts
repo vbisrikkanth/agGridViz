@@ -30,7 +30,13 @@ module powerbi.extensibility.visual {
 
     export class VisualSettings extends DataViewObjectsParser {
       public dataPoint: dataPointSettings = new dataPointSettings();
-      }
+      public tableSettings: tableSettings = new tableSettings();
+    }
+
+    export class tableSettings {
+      public enableSorting : boolean = false;
+      public enableFiltering : boolean = false;
+    }
 
     export class dataPointSettings {
      // Default color

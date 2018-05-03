@@ -17,6 +17,23 @@
         }
     ],
     "objects": {
+        "tableSettings":{
+            "displayName":"Table Settings",
+            "properties":{
+                "enableSorting":{
+                    "displayName":"Enable Sorting",
+                    "type": {
+                        "bool": true
+                    }
+                },
+                "enableFiltering":{
+                    "displayName":"Enable Filtering",
+                    "type": {
+                        "bool": true
+                    }
+                }
+            }
+        },
         "dataPoint": {
             "displayName": "Data colors",
             "properties": {
@@ -88,5 +105,6 @@
                 }
             }
         }
-    ]
+    ],
+    "advancedEditModeSupport": 2
 }

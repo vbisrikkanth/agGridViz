@@ -28,31 +28,40 @@ module powerbi.extensibility.visual {
     "use strict";   
 
    
-    export class Visual implements IVisual {
+    export class VbiTable implements IVisual {
         private target: HTMLElement;
         private settings: VisualSettings;
         private agGridIntegration : any;
         private selectionManager: ISelectionManager;
         private host: IVisualHost;
+        private tableContainer:HTMLElement;
+        private editorContainer: HTMLElement;
         constructor(options: VisualConstructorOptions) {
             this.selectionManager = options.host.createSelectionManager();
             this.host=options.host;
-            console.log('Visual constructor', options);
             this.target = options.element;
             this.agGridIntegration = (<any>window).agGridIntegration;
+            this.tableContainer =document.createElement("div");
+            this.editorContainer = document.createElement("div");
+            this.target.appendChild(this.editorContainer);
+            this.target.appendChild(this.tableContainer);
         }
 
         public update(options: VisualUpdateOptions) {
-            this.settings = Visual.parseSettings(options && options.dataViews && options.dataViews[0]);
-            // let parameters: any={
-            //     target:this.target,
-            //     host:this.host,
-            //     dataView:options.dataViews[0],
-            //     selectionManager:this.selectionManager
-            // }
-
-            new this.agGridIntegration.SimpleGrid(this.target,options.dataViews[0],this.selectionManager,this.host);
-
+            this.settings = VbiTable.parseSettings(options && options.dataViews && options.dataViews[0]);
+            if (options.editMode === EditMode.Advanced) {
+                let dataView = options.dataViews[0];
+                const editor =new AdvancedEditor(this.editorContainer,this.host,this.settings);
+                editor.renderEditor();
+                this.editorContainer.setAttribute("style","display:block;height:20%");
+                this.tableContainer.setAttribute("style","height:80%");
+            }
+            else{
+                this.editorContainer.setAttribute("style","display:none");
+                this.tableContainer.setAttribute("style","height:100%");
+            }
+            new this.agGridIntegration.SimpleGrid(this.tableContainer,options.dataViews[0],this.selectionManager,this.host,this.settings);
+                       
         }
 
         private static parseSettings(dataView: DataView): VisualSettings {

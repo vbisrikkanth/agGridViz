@@ -11,6 +11,7 @@ import ISelectionManager = powerbi.extensibility.ISelectionManager;
 import ISelectionIdBuilder = powerbi.visuals.ISelectionIdBuilder;
 import IVisualHost = powerbi.extensibility.visual.IVisualHost;
 import valueFormatter = powerbi.extensibility.utils.formatting.valueFormatter;
+import DataViewObjectsParser = powerbi.extensibility.utils.dataview.DataViewObjectsParser;
 
 export class SimpleGrid {
   private gridOptions: GridOptions = <GridOptions>{};
@@ -21,11 +22,12 @@ export class SimpleGrid {
     eGridDiv: HTMLElement,
     dataView: DataView,
     selectionManager: ISelectionManager,
-    host: IVisualHost
+    host: IVisualHost,
+    settings : any
   ) {
     this.selectionManager = selectionManager;
     this.host = host;
-    this.gridOptions = this.constructGridOptions(dataView);
+    this.gridOptions = this.constructGridOptions(dataView,settings);
     eGridDiv.setAttribute("class", "ag-theme-balham");
     LicenseManager.setLicenseKey( License.KEY);
     console.log(this.gridOptions);
@@ -33,27 +35,27 @@ export class SimpleGrid {
     new Grid(eGridDiv, this.gridOptions);
   }
 
-  private constructGridOptions(dataView: DataView): GridOptions {
+  private constructGridOptions(dataView: DataView,settings): GridOptions {
+    console.log(settings.tableSettings.enableSorting);
     let gridOptions: GridOptions = {
       columnDefs: this.createColumnDefs(dataView),
       rowData: this.createRowData(dataView),
       rowSelection: "single",
       onRowClicked: event => {
-        console.log(event, "event");
         if(!event.data || !event.data.selectionId){
           return;
         }
         this.selectionManager.select(event.data.selectionId, false).then(
           selectionIds => {
-            console.log(selectionIds);
+           // console.log(selectionIds);
           },
           reason => {
-            console.log(reason);
+           // console.log(reason);
           }
         );
       },
-      enableSorting: true,
-      enableFilter: true
+      enableSorting: settings.tableSettings.enableSorting,
+      enableFilter: settings.tableSettings.enableFiltering
     };
     return gridOptions;
   }
@@ -77,7 +79,7 @@ export class SimpleGrid {
         field: groupName ? groupName.toString() : value.source.displayName,
         enableValue: true,
         valueFormatter: parameters => {
-          console.log(parameters);
+          //console.log(parameters);
           if(!parameters.data){
             return parameters.value;
           }
@@ -95,7 +97,7 @@ export class SimpleGrid {
   // specify the data
   private createRowData(dataView: DataView) {
     let rowDefs = [];
-    console.log(dataView);
+    //console.log(dataView);
     let totalRows = dataView.categorical.categories[0].values.length;
     // let formatterMap={}
     for (let rowIndex = 0; rowIndex < totalRows; rowIndex++) {
