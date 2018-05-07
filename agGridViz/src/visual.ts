@@ -36,6 +36,7 @@ module powerbi.extensibility.visual {
         private host: IVisualHost;
         private tableContainer:HTMLElement;
         private editorContainer: HTMLElement;
+        private valueSources: DataViewMetadataColumn[];
         constructor(options: VisualConstructorOptions) {
             this.selectionManager = options.host.createSelectionManager();
             this.host=options.host;
@@ -48,6 +49,7 @@ module powerbi.extensibility.visual {
         }
 
         public update(options: VisualUpdateOptions) {
+            console.log(options.dataViews[0].matrix);
             this.settings = VbiTable.parseSettings(options && options.dataViews && options.dataViews[0]);
             if (options.editMode === EditMode.Advanced) {
                 let dataView = options.dataViews[0];
@@ -60,6 +62,8 @@ module powerbi.extensibility.visual {
                 this.editorContainer.setAttribute("style","display:none");
                 this.tableContainer.setAttribute("style","height:100%");
             }
+
+            this.valueSources =options.dataViews[0].matrix.valueSources;
             //let columns:DataViewMatrix.columns = options.dataViews[0].matrix.columns;
             new this.agGridIntegration.SimpleGrid(this.tableContainer,options.dataViews[0],this.selectionManager,this.host,this.settings);
                        
@@ -74,7 +78,28 @@ module powerbi.extensibility.visual {
          * 
          */
         public enumerateObjectInstances(options: EnumerateVisualObjectInstancesOptions): VisualObjectInstance[] | VisualObjectInstanceEnumerationObject {
-            return VisualSettings.enumerateObjectInstances(this.settings || VisualSettings.getDefault(), options);
+            console.log(this.settings);
+            let visualSettings= VisualSettings.enumerateObjectInstances(this.settings || VisualSettings.getDefault(), options);
+            let objectName = options.objectName;
+            let objectEnumeration: VisualObjectInstance[] = [];
+            
+            if(objectName==="fieldFormatting"){
+                this.valueSources.forEach((valueSource)=>{
+                    objectEnumeration.push({
+                        objectName: objectName,
+                        displayName: valueSource.displayName,
+                        properties:{
+                            displayUnit: valueSource.objects &&  valueSource.objects.fieldFormatting ?  valueSource.objects.fieldFormatting.displayUnit :"none"
+                        },
+                        selector:this.host.createSelectionIdBuilder().withMeasure(valueSource.queryName).createSelectionId().getSelector()
+                    });
+                })
+                console.log(objectEnumeration);
+                return objectEnumeration;
+            };
+            
+           
+            return visualSettings;
         }
     }
 }

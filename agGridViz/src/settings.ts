@@ -51,4 +51,6 @@ module powerbi.extensibility.visual {
       public fontSize: number = 12;
      }
 
+
+
 }

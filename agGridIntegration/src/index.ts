@@ -15,6 +15,12 @@ import DataViewObjectsParser = powerbi.extensibility.utils.dataview.DataViewObje
 import DataViewMatrixNode = powerbi.DataViewMatrixNode;
 
 export class SimpleGrid {
+  private static formattingOptions={
+    "thousands":1001,
+    "millions":1e6,
+    "billions":1e9,
+    "trillions":1e12
+  }
   private gridOptions: GridOptions = <GridOptions>{};
   private selectionManager: ISelectionManager;
   private host: IVisualHost;
@@ -149,10 +155,11 @@ private setColumnHeadersWithRowData(){
           values["source_"+child.level] = child.levelValues[0].value;
           
           Object.keys(child.values).forEach((key)=>{
-            const valueFormatString=this.dataView.matrix.valueSources[child.values[key].valueSourceIndex || 0].format;
-            if(valueFormatString){
+            const valueSource=this.dataView.matrix.valueSources[child.values[key].valueSourceIndex || 0];
+            const selectedFormat= valueSource.objects &&  valueSource.objects.fieldFormatting ?  valueSource.objects.fieldFormatting.displayUnit.toString() : "";
+            if(valueSource.format){
               const iValueFormatter = valueFormatter.create({
-                format: valueFormatString
+                format: valueSource.format,value: SimpleGrid.formattingOptions[selectedFormat]
               });
               values[key.toString()+"_formattedValue"]=iValueFormatter.format(child.values[key].value);
             }

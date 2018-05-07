@@ -34,6 +34,38 @@
                 }
             }
         },
+        "fieldFormatting": {
+            "displayName": "Field Formatting",
+            "properties": {
+                "displayUnit": {
+                    "displayName": "Measures",
+                    "type": {
+                        "enumeration": [
+                            {
+                                "displayName": "None",
+                                "value": "none"
+                            },
+                            {
+                                "displayName": "Thousands",
+                                "value": "thousands"
+                            },
+                            {
+                                "displayName": "Millions",
+                                "value": "millions"
+                            },
+                            {
+                                "displayName": "Billions",
+                                "value": "billions"
+                            },
+                            {
+                                "displayName": "Trillions",
+                                "value": "trillions"
+                            }
+                        ]
+                    }
+                }
+            }
+        },
         "dataPoint": {
             "displayName": "Data colors",
             "properties": {
