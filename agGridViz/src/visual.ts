@@ -60,8 +60,57 @@ module powerbi.extensibility.visual {
                 this.editorContainer.setAttribute("style","display:none");
                 this.tableContainer.setAttribute("style","height:100%");
             }
+            console.log(options.dataViews[0].matrix);
+            console.log(options.dataViews[0].metadata);
+            console.log("Row levels ",options.dataViews[0].matrix.rows.levels);
+            console.log(options.dataViews[0].matrix.columns);
+            console.log("Column levels ",options.dataViews[0].matrix.columns.levels);
+            
+            let fin = [];
+            let fin2 = [];
+            this.updateRecursive(options.dataViews[0].matrix.rows.root.children,fin2);
+            this.updateRecursive(options.dataViews[0].matrix.columns.root.children,fin);
+            console.log(JSON.stringify(fin));
+            console.log(JSON.stringify(fin2));
+
+            //let columns:DataViewMatrix.columns = options.dataViews[0].matrix.columns;
             new this.agGridIntegration.SimpleGrid(this.tableContainer,options.dataViews[0],this.selectionManager,this.host,this.settings);
                        
+        }
+
+        /**
+         *  Expected Structure
+         * 
+         *   
+         * 
+          {
+                headerName: 'Athlete Details',
+                children: [
+                    {headerName: 'Athlete', field: 'athlete', width: 150, filter: 'agTextColumnFilter'},
+                    {headerName: 'Age', field: 'age', width: 90, filter: 'agNumberColumnFilter'},
+                    {headerName: 'Country',
+                        children:[
+
+                        { headerName:'State',field: 'state', width: 60},
+                        { headerName:'Country',field: 'country', width: 60},
+                    
+                    ]}
+                ]
+          }
+         * 
+         * 
+         * 
+         */
+        private updateRecursive(dataViewMatrix:DataViewMatrixNode[],def){
+            dataViewMatrix.forEach((child)=>{
+                if(child.children){
+                    let childList = [];
+                    def.push({headerName:child.value,children:childList});
+                    this.updateRecursive(child.children,childList);
+                }else{
+                    def.push({headerName:child.value})
+                }
+            });
         }
 
         private static parseSettings(dataView: DataView): VisualSettings {
